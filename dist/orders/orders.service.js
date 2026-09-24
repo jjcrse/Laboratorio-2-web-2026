@@ -19,14 +19,20 @@ const customer_entity_1 = require("./entities/customer.entity");
 const order_entity_1 = require("./entities/order.entity");
 const typeorm_2 = require("typeorm");
 const order_rules_service_1 = require("./order-rules/order-rules.service");
+const order_preparation_estimate_service_1 = require("./order-preparation-estimate/order-preparation-estimate.service");
+const order_priority_service_1 = require("./order-prority/order-priority.service");
 let OrdersService = class OrdersService {
     ordersRepository;
     customersRepository;
     orderRulesService;
-    constructor(ordersRepository, customersRepository, orderRulesService) {
+    orderPreparationEstimateService;
+    orderPriorityService;
+    constructor(ordersRepository, customersRepository, orderRulesService, orderPreparationEstimateService, orderPriorityService) {
         this.ordersRepository = ordersRepository;
         this.customersRepository = customersRepository;
         this.orderRulesService = orderRulesService;
+        this.orderPreparationEstimateService = orderPreparationEstimateService;
+        this.orderPriorityService = orderPriorityService;
     }
     async create(createOrderDto) {
         const customer = await this.customersRepository.findOneBy({
@@ -76,6 +82,48 @@ let OrdersService = class OrdersService {
         order.status = "ready";
         return this.ordersRepository.save(order);
     }
+    async estimatePreparationTime(id) {
+        const order = await this.findOne(id);
+        return this, this.orderPreparationEstimateService.estimate(order);
+    }
+    async findRecentPending() {
+        return this.ordersRepository.find({
+            where: { status: "pending" },
+            order: { id: "DESC" },
+            take: 2,
+            relations: {
+                customer: true,
+            },
+        });
+    }
+    async getPriority(id) {
+        const order = await this.findOne(id);
+        const { priority, message } = this.orderPriorityService.classify(order);
+        return {
+            orderId: order.id,
+            status: order.status,
+            quantity: order.quantity,
+            priority,
+            message
+        };
+    }
+    async findPendingQueue() {
+        const [orders, totalPending] = await Promise.all([
+            this.ordersRepository.find({
+                where: { status: "pending" },
+                order: { id: "ASC" },
+                relations: {
+                    customer: true,
+                },
+            }),
+            this.ordersRepository.count({ where: { status: "pending" } }),
+        ]);
+        return {
+            totalPending,
+            showing: orders.length,
+            orders,
+        };
+    }
 };
 exports.OrdersService = OrdersService;
 exports.OrdersService = OrdersService = __decorate([
@@ -84,6 +132,8 @@ exports.OrdersService = OrdersService = __decorate([
     __param(1, (0, typeorm_1.InjectRepository)(customer_entity_1.CustomerEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
-        order_rules_service_1.OrderRulesService])
+        order_rules_service_1.OrderRulesService,
+        order_preparation_estimate_service_1.OrderPreparationEstimateService,
+        order_priority_service_1.OrderPriorityService])
 ], OrdersService);
 //# sourceMappingURL=orders.service.js.map

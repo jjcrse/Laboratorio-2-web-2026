@@ -15,6 +15,8 @@ const customer_entity_1 = require("./entities/customer.entity");
 const typeorm_module_1 = require("../../node_modules/@nestjs/typeorm/dist/typeorm.module");
 const dining_entity_1 = require("./entities/dining.entity");
 const order_rules_service_1 = require("./order-rules/order-rules.service");
+const order_preparation_estimate_service_1 = require("./order-preparation-estimate/order-preparation-estimate.service");
+const order_priority_service_1 = require("./order-prority/order-priority.service");
 let OrdersModule = class OrdersModule {
 };
 exports.OrdersModule = OrdersModule;
@@ -23,7 +25,7 @@ exports.OrdersModule = OrdersModule = __decorate([
         imports: [
             typeorm_module_1.TypeOrmModule.forFeature([order_entity_1.OrderEntity, customer_entity_1.CustomerEntity, dining_entity_1.DiningEntity]),
         ],
-        providers: [orders_service_1.OrdersService, order_rules_service_1.OrderRulesService],
+        providers: [orders_service_1.OrdersService, order_rules_service_1.OrderRulesService, order_preparation_estimate_service_1.OrderPreparationEstimateService, order_priority_service_1.OrderPriorityService],
         controllers: [orders_controller_1.OrdersController],
     })
 ], OrdersModule);

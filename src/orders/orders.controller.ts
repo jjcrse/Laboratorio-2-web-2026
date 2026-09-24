@@ -16,37 +16,31 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
-  }
+  findAll() { return this.ordersService.findAll(); }
+
+  @Get("pending")
+  findRecentPending() { return this.ordersService.findRecentPending(); }
+
+  @Get("pending-queue")
+  findPendingQueue() { return this.ordersService.findPendingQueue(); }
+
+  @Post()
+  create(@Body() createOrderDto: CreateOrderDto) { return this.ordersService.create(createOrderDto); }
 
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.ordersService.update(Number(id), updateOrderDto);
   }
 
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
-  }
-
   @Patch(":id/ready")
-  markAsReady(@Param("id") id: string) {
-    return this.ordersService.markAsReady(Number(id));
-  }
+  markAsReady(@Param("id") id: string) { return this.ordersService.markAsReady(Number(id)); }
 
-  @Get (":id/estimate")
+  @Get(":id/estimate")
   estimatePreparationTime(@Param("id") id: string) {
     return this.ordersService.estimatePreparationTime(Number(id));
   }
 
-  @Get("pending")
-  findRecentPending() {
-    return this.ordersService.findRecentPending();
-  }
-
   @Get(":id/priority")
-  getOrderPriority(@Param("id") id: string) {
-    return this.ordersService.getOrderPriority(Number(id));
-  }
+  getPriority(@Param("id") id: string) { return this.ordersService.getPriority(Number(id)); }
 }
+
