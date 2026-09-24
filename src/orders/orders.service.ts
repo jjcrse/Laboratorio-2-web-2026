@@ -117,8 +117,8 @@ export class OrdersService {
     const {priority,message}=this.orderPriorityService.classify(order);
     return{
       orderId: order.id,
-      status: order,status,
-      quiatnty: order.quantity,
+      status: order.status,
+      quantity: order.quantity,
       priority,
       message
     };
