@@ -113,6 +113,14 @@ export class OrdersService {
     });
   }
   async getPriority (id: number) {
-    const order=await this
+    const order=await this.findOne(id);
+    const {priority,message}=this.orderPriorityService.classify(order);
+    return{
+      orderId: order.id,
+      status: order,status,
+      quiatnty: order.quantity,
+      priority,
+      message
+    };
   }
 }
