@@ -10,6 +10,8 @@ import { Repository } from "typeorm";
 import { UpdateOrderDto } from "./dto/update-order.dto";
 import { OrderRulesService } from "./order-rules/order-rules.service";
 import { OrderPreparationEstimateService } from "./order-preparation-estimate/order-preparation-estimate.service";
+import { OrderPriorityService } from "./order-prority/order-priority.service";
+
 
 @Injectable()
 export class OrdersService {
@@ -23,6 +25,8 @@ export class OrdersService {
     private readonly orderRulesService: OrderRulesService,
 
     private readonly orderPreparationEstimateService: OrderPreparationEstimateService,
+
+    private readonly orderPriorityService: OrderPriorityService,
   ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<OrderEntity> {
@@ -107,5 +111,8 @@ export class OrdersService {
         customer:true,
       },
     });
+  }
+  async getPriority (id: number) {
+    const order=await this
   }
 }
