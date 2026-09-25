@@ -96,3 +96,16 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+
+
+Preguntas del lab
+
+Respuestas
+
+1. Porque no tiene que ir a buscar nada a la base de datos porque este servicio ya le llega el pedido completo (alguien más lo buscó antes) y su único trabajo es mirar ese pedido y decidir qué tan urgente es con esas reglas que le puse es simple de comparar números y estados. No necesita conectarse a nada pa hacer eso
+2. Es como el intermediario. Primero busca el pedido en la base de datos (y si no existe, avisa con el error 404). Luego le pasa ese pedido a OrderPriorityService pa que diga qué prioridad tiene. Y al final junta toda esa información en una sola respuesta ordenada para entregarla
+3. totalPending es cuántos pedidos pendientes hay en total, aunque sean 50. showing es cuántos se están mostrando en ese momento en la respuesta que como máximo son 5 si hay 3 pedidos pendientes los dos números son iguales pero si hay 20, totalPending dice 20 pero showing solo dice 5
+4. Porque las pruebas no necesitan datos reales guardados en ninguna base de datos. Simplemente se inventa un pedido de mentiras directo en el código (por ejemplo "pendiente con 3 unidades") y se le pregunta al servicio qué prioridad le pondría Como el servicio no se conecta a nada externo, no hace falta tener la base de datos prendida para probarlo
+5. El controller se llenaría de lógica que no le corresponde además de recibir la petición y responder también tendría que saber las reglas de negocio (qué cantidad es prioridad alta, media, etc) Eso hace el código más difícil de entender de probar y de reutilizar en otra parte del proyecto si algún día se necesita la misma regla en otro lugar
