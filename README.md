@@ -109,3 +109,48 @@ Respuestas
 3. totalPending es cuántos pedidos pendientes hay en total, aunque sean 50. showing es cuántos se están mostrando en ese momento en la respuesta que como máximo son 5 si hay 3 pedidos pendientes los dos números son iguales pero si hay 20, totalPending dice 20 pero showing solo dice 5
 4. Porque las pruebas no necesitan datos reales guardados en ninguna base de datos. Simplemente se inventa un pedido de mentiras directo en el código (por ejemplo "pendiente con 3 unidades") y se le pregunta al servicio qué prioridad le pondría Como el servicio no se conecta a nada externo, no hace falta tener la base de datos prendida para probarlo
 5. El controller se llenaría de lógica que no le corresponde además de recibir la petición y responder también tendría que saber las reglas de negocio (qué cantidad es prioridad alta, media, etc) Eso hace el código más difícil de entender de probar y de reutilizar en otra parte del proyecto si algún día se necesita la misma regla en otro lugar
+
+
+
+Utilizacion de la IA:
+
+
+Herramienta consultada:Chat GPT
+1. Para que sirve Promise.all en el codigo?,osea no entiendo bien el concepto de Promise.all
+
+Respuesta:
+¿Por qué Promise.all?
+Normalmente, si pides dos cosas a la base de datos, se hace una y luego la otra (una espera a que termine la primera para empezar la segunda). Promise.all es un concepto de JavaScript que permite decir "lanza estas dos peticiones al mismo tiempo, y avísame cuando ambas hayan terminado". Es más eficiente porque no hay que esperar en fila.
+
+Decisión:
+la utilize para que no se demore tanto poorque pense que a la hora de testear se iba a demorar y queria que hiciera las dos funciones al mismo tiempo entonces por eso utilice proimise all
+
+Herramienta consultada: VidaAI
+2. No entiendo bien qué es una prueba unitaria ni
+para qué sirve la función buildOrder en mi archivo de tests, ¿me lo explicas?
+
+Respuesta:
+Se explicó que una prueba
+unitaria comprueba automáticamente si una parte del código (en este
+caso classify()) devuelve el resultado esperado ante distintas
+entradas, y que buildOrder es solo una función de ayuda para no repetir
+código al crear pedidos de prueba en cada caso.
+
+
+Decisión:
+Entendí la lógica de mis propias pruebas para
+poder explicarlas si me preguntan, sin modificar el código que ya
+tenía escrito.
+
+Herramienta consultada: Claude
+
+3. ¿Qué diferencia hay entre usar count() y
+countBy() en TypeORM? Los vi los dos en clase y no tengo claro cuándo usar cada uno.
+
+Respuesta:Se explicó que ambos cuentan
+registros que cumplen una condición, pero se escriben distinto:
+count() recibe un objeto con where, mientras que countBy() recibe
+directamente la condición sin necesidad de envolverla en where. Hacen lo mismo, es solo una forma más corta de escribirlo.
+
+Decision:Entendí que son intercambiables y revisé mi
+propio código para asegurarme de que la consulta esté completa segúnlo que pide el taller.
